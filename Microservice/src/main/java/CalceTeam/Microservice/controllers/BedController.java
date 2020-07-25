@@ -1,5 +1,5 @@
 package CalceTeam.Microservice.controllers;
 
-public class PatientController {
+public class BedController {
     
 }
