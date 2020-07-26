@@ -18,6 +18,8 @@ public class PatientServiceImpl{
     @Autowired
     @Qualifier("PatientRepository")
     private PatientRepository repository;
+
+    @Autowired
     private PatientMapper mapper;
 
     public boolean create(Patient patient){

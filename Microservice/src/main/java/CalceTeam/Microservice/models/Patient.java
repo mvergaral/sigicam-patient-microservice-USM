@@ -26,10 +26,7 @@ public class Patient {
   private long id;
 
   @Column(name = "run", nullable = false, unique = true)
-  private int run;
-
-  @Column(name = "dv", nullable = false)
-  private int dv;
+  private String run;
 
   @Column(name = "name", nullable = false)
   String name;
@@ -53,15 +50,13 @@ public class Patient {
       @JoinColumn(name = "couch_id") })
   Set<Couch> couchs = new HashSet<>();
 
-  // standard constructor/getters/setters
 
   public Patient() {
   }
 
-  public Patient(long id, int run, int dv, String name, String last_name, String gender, String address, Set<Bed> beds, Set<Couch> couchs) {
+  public Patient(long id, String run, String name, String last_name, String gender, String address, Set<Bed> beds, Set<Couch> couchs) {
     this.id = id;
     this.run = run;
-    this.dv = dv;
     this.name = name;
     this.last_name = last_name;
     this.gender = gender;
@@ -78,20 +73,12 @@ public class Patient {
     this.id = id;
   }
 
-  public int getRun() {
+  public String getRun() {
     return this.run;
   }
 
-  public void setRun(int run) {
+  public void setRun(String run) {
     this.run = run;
-  }
-
-  public int getDv() {
-    return this.dv;
-  }
-
-  public void setDv(int dv) {
-    this.dv = dv;
   }
 
   public String getName() {
@@ -147,13 +134,8 @@ public class Patient {
     return this;
   }
 
-  public Patient run(int run) {
+  public Patient run(String run) {
     this.run = run;
-    return this;
-  }
-
-  public Patient dv(int dv) {
-    this.dv = dv;
     return this;
   }
 
@@ -195,12 +177,12 @@ public class Patient {
             return false;
         }
         Patient patient = (Patient) o;
-        return id == patient.id && run == patient.run && dv == patient.dv && Objects.equals(name, patient.name) && Objects.equals(last_name, patient.last_name) && Objects.equals(gender, patient.gender) && Objects.equals(address, patient.address) && Objects.equals(beds, patient.beds) && Objects.equals(couchs, patient.couchs);
+        return id == patient.id && Objects.equals(run, patient.run) && Objects.equals(name, patient.name) && Objects.equals(last_name, patient.last_name) && Objects.equals(gender, patient.gender) && Objects.equals(address, patient.address) && Objects.equals(beds, patient.beds) && Objects.equals(couchs, patient.couchs);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, run, dv, name, last_name, gender, address, beds, couchs);
+    return Objects.hash(id, run, name, last_name, gender, address, beds, couchs);
   }
 
   @Override
@@ -208,7 +190,6 @@ public class Patient {
     return "{" +
       " id='" + getId() + "'" +
       ", run='" + getRun() + "'" +
-      ", dv='" + getDv() + "'" +
       ", name='" + getName() + "'" +
       ", last_name='" + getLast_name() + "'" +
       ", gender='" + getGender() + "'" +
@@ -217,4 +198,5 @@ public class Patient {
       ", couchs='" + getCouchs() + "'" +
       "}";
   }
+  
 }

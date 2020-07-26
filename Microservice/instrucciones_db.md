@@ -11,3 +11,8 @@
     alter database calcedb owner to calceuser;
     grant all privileges on database calcedb to calceuser;
     ```
+3. **Comandos maven**
+    ```
+        Compilar sin teatear:
+            mvn clean install -DskipTests=true 
+    ```
