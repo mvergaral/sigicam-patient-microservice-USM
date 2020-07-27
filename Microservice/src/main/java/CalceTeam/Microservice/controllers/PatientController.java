@@ -11,6 +11,7 @@ import CalceTeam.Microservice.models.*;
 import CalceTeam.Microservice.services.PatientServiceImpl; 
 import CalceTeam.Microservice.dtos.PatientDto;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST, RequestMethod.PUT})
@@ -61,6 +62,37 @@ public class PatientController {
       }
       else{
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+
+  @GetMapping("/{id}/camas")
+    public ResponseEntity<Set<Bed>> getPatientBeds(@PathVariable("id") long id){
+      Patient patient = service.findById(id);
+      if (patient != null){
+        return new ResponseEntity<>(patient.getBeds(), HttpStatus.FOUND);
+      }
+      else{
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+    }
+
+  @GetMapping("/{id}/sillones")
+    public ResponseEntity<Set<Couch>> getPatientCouch(@PathVariable("id") long id){
+      Patient patient = service.findById(id);
+      if (patient != null){
+        return new ResponseEntity<>(patient.getCouchs(), HttpStatus.FOUND);
+      }
+      else{
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+    }
+    @GetMapping("/all")
+    public ResponseEntity<List<Patient>> getAllPatients() {
+      List<Patient> patients = service.getAllPatients();
+      if (patients.size() != 0) {
+        return new ResponseEntity<>(patients, HttpStatus.FOUND);
+      } else {
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
     }
 }

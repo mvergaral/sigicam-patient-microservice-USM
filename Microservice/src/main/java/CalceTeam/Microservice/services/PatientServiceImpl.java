@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import static java.lang.System.out;
-
+import java.util.List;
 
 @Service("PatientService")
 public class PatientServiceImpl{
@@ -67,6 +67,14 @@ public class PatientServiceImpl{
         try{
             return repository.findByRun(run);
         }catch(Exception e){
+            return null;
+        }
+    }
+    
+    public List<Patient> getAllPatients() {
+        try {
+            return repository.getAllPatients();
+        } catch (Exception e) {
             return null;
         }
     }
