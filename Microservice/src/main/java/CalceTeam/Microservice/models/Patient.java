@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import CalceTeam.Microservice.models.Bed;
 import CalceTeam.Microservice.models.Couch;
 
@@ -40,12 +41,14 @@ public class Patient {
   @Column(name = "address", nullable = false)
   String address;
 
-  @ManyToMany(cascade = { CascadeType.ALL })
+  @JsonIgnoreProperties
+  @ManyToMany
   @JoinTable(name = "patient_bed", joinColumns = { @JoinColumn(name = "patient_id") }, inverseJoinColumns = {
       @JoinColumn(name = "bed_id") })
-  Set<Bed> beds = new HashSet<>();
+  Set<Bed> beds = new HashSet<Bed>();
 
-  @ManyToMany(cascade = { CascadeType.ALL })
+  @JsonIgnoreProperties
+  @ManyToMany
   @JoinTable(name = "patient_couch", joinColumns = { @JoinColumn(name = "patient_id") }, inverseJoinColumns = {
       @JoinColumn(name = "couch_id") })
   Set<Couch> couchs = new HashSet<>();
@@ -159,16 +162,6 @@ public class Patient {
     return this;
   }
 
-  public Patient beds(Set<Bed> beds) {
-    this.beds = beds;
-    return this;
-  }
-
-  public Patient couchs(Set<Couch> couchs) {
-    this.couchs = couchs;
-    return this;
-  }
-
   @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -198,5 +191,6 @@ public class Patient {
       ", couchs='" + getCouchs() + "'" +
       "}";
   }
+
   
 }

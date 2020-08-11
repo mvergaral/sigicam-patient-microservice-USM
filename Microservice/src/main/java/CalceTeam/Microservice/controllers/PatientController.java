@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +66,7 @@ public class PatientController {
       }
     }
 
+<<<<<<< Updated upstream
   @GetMapping("/{id}/camas")
     public ResponseEntity<Set<Bed>> getPatientBeds(@PathVariable("id") long id){
       Patient patient = service.findById(id);
@@ -95,4 +97,26 @@ public class PatientController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
     }
+=======
+  @PutMapping("/{id}/assignBed")
+    public ResponseEntity<Void> assignBedtoPatient(@PathVariable("id") long id, @Param("id_bed") long id_bed ){
+      if(service.assignBedtoPatient(id_bed, id)){
+        return new ResponseEntity<>(HttpStatus.CREATED);
+      }
+      else{
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+
+  @PutMapping("/{id}/assignCouch")
+    public ResponseEntity<Void> assignCouchtoPatient(@PathVariable long id, @RequestHeader  long id_couch ){
+      if(service.assignCouchtoPatient(id_couch, id)){
+        return new ResponseEntity<>(HttpStatus.CREATED);
+      }
+      else{
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+    
+>>>>>>> Stashed changes
 }
