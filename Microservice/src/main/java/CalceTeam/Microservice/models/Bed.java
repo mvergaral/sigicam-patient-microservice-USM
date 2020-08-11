@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 @Table(name = "bed")
@@ -22,18 +22,14 @@ public class Bed {
   @Column(name = "bed_id", nullable = false, unique = true)
   private long id;
 
-  @JsonIgnoreProperties
-  @ManyToMany(mappedBy = "beds")
-  private Set<Patient> patients = new HashSet<Patient>();
-
-  // standard constructors/getters/setters
-
+  @OneToMany(mappedBy = "bed")
+  Set<PatientBed> patients;
 
 
   public Bed() {
   }
 
-  public Bed(long id, Set<Patient> patients) {
+  public Bed(long id, Set<PatientBed> patients) {
     this.id = id;
     this.patients = patients;
   }
@@ -46,11 +42,11 @@ public class Bed {
     this.id = id;
   }
 
-  public Set<Patient> getPatients() {
+  public Set<PatientBed> getPatients() {
     return this.patients;
   }
 
-  public void setPatients(Set<Patient> patients) {
+  public void setPatients(Set<PatientBed> patients) {
     this.patients = patients;
   }
 
@@ -59,7 +55,10 @@ public class Bed {
     return this;
   }
 
- 
+  public Bed patients(Set<PatientBed> patients) {
+    this.patients = patients;
+    return this;
+  }
 
   @Override
     public boolean equals(Object o) {
@@ -85,7 +84,5 @@ public class Bed {
       "}";
   }
   
-  public void addBed(Patient p){
-    this.patients.add(p);
-  }
+
 }

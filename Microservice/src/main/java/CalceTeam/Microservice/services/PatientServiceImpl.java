@@ -25,6 +25,14 @@ public class PatientServiceImpl{
     private PatientMapper mapper;
 
     @Autowired
+    @Qualifier("PatientBedRepository")
+    private PatientBedRepository patientBedRepository;
+
+    @Autowired
+    @Qualifier("PatientCouchRepository")
+    private PatientCouchRepository patientCouchRepository;
+
+    @Autowired
     @Qualifier("BedRepository")
     private BedRepository bedRepository;
 
@@ -83,27 +91,22 @@ public class PatientServiceImpl{
 
     public boolean assignBedtoPatient(long id_bed, long id_patient){
         try{
-            Patient patient = repository.findById(id_patient);
-            Bed bed = bedRepository.findById(id_bed);
-            patient.getBeds().add(bed);
-            
-            EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "persistenceUnitName" );
-            EntityManager em = emfactory.createEntityManager( );
-            
+            PatientBed bedToPatient = new PatientBed();
+            bedToPatient.setPatientbed(repository.findById(id_patient));
+            bedToPatient.setBed(bedRepository.findById(id_bed));
+            patientBedRepository.save(bedToPatient);
             return true;
         }catch(Exception e){
-            System.out.println(e);
             return false;
         }
     }
 
     public boolean assignCouchtoPatient(long id_couch, long id_patient){
         try{
-            Patient patient = repository.findById(id_patient);
-            Couch couch = couchRepository.findById(id_couch);
-            EntityManagerFactory emfactory = Persistence.createEntityManagerFactory( "my-persistence-unit" );
-            EntityManager em = emfactory.createEntityManager( );
-            
+            PatientCouch couchToPatient = new PatientCouch();
+            couchToPatient.setPatientcouch(repository.findById(id_patient));
+            couchToPatient.setCouch(couchRepository.findById(id_couch));
+            patientCouchRepository.save(couchToPatient);
             return true;
         }catch(Exception e){
             return false;

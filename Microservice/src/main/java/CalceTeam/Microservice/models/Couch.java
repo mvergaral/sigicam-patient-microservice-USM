@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -21,17 +21,16 @@ public class Couch {
   @Column(name = "couch_id", nullable = false, unique = true)
   private long id;
 
-  @JsonIgnore
-  @ManyToMany(mappedBy = "couchs")
-  private Set<Patient> Patients = new HashSet<>(); 
+  @OneToMany(mappedBy = "couch")
+  Set<PatientCouch> patients;
 
 
   public Couch() {
   }
 
-  public Couch(long id, Set<Patient> Patients) {
+  public Couch(long id, Set<PatientCouch> patients) {
     this.id = id;
-    this.Patients = Patients;
+    this.patients = patients;
   }
 
   public long getId() {
@@ -42,12 +41,12 @@ public class Couch {
     this.id = id;
   }
 
-  public Set<Patient> getPatients() {
-    return this.Patients;
+  public Set<PatientCouch> getPatients() {
+    return this.patients;
   }
 
-  public void setPatients(Set<Patient> Patients) {
-    this.Patients = Patients;
+  public void setPatients(Set<PatientCouch> patients) {
+    this.patients = patients;
   }
 
   public Couch id(long id) {
@@ -55,8 +54,8 @@ public class Couch {
     return this;
   }
 
-  public Couch Patients(Set<Patient> Patients) {
-    this.Patients = Patients;
+  public Couch patients(Set<PatientCouch> patients) {
+    this.patients = patients;
     return this;
   }
 
@@ -68,20 +67,21 @@ public class Couch {
             return false;
         }
         Couch couch = (Couch) o;
-        return id == couch.id && Objects.equals(Patients, couch.Patients);
+        return id == couch.id && Objects.equals(patients, couch.patients);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, Patients);
+    return Objects.hash(id, patients);
   }
 
   @Override
   public String toString() {
     return "{" +
       " id='" + getId() + "'" +
-      ", Patients='" + getPatients() + "'" +
+      ", patients='" + getPatients() + "'" +
       "}";
   }
+
 
 }

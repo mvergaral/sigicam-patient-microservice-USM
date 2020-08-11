@@ -9,13 +9,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.CascadeType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import CalceTeam.Microservice.models.Bed;
-import CalceTeam.Microservice.models.Couch;
+import CalceTeam.Microservice.models.*;
+
 
 @Entity
 @Table(name = "patient")
@@ -41,23 +41,17 @@ public class Patient {
   @Column(name = "address", nullable = false)
   String address;
 
-  @JsonIgnoreProperties
-  @ManyToMany
-  @JoinTable(name = "patient_bed", joinColumns = { @JoinColumn(name = "patient_id") }, inverseJoinColumns = {
-      @JoinColumn(name = "bed_id") })
-  Set<Bed> beds = new HashSet<Bed>();
+  @OneToMany(mappedBy = "patientbed")
+  Set<PatientBed> beds;
 
-  @JsonIgnoreProperties
-  @ManyToMany
-  @JoinTable(name = "patient_couch", joinColumns = { @JoinColumn(name = "patient_id") }, inverseJoinColumns = {
-      @JoinColumn(name = "couch_id") })
-  Set<Couch> couchs = new HashSet<>();
+  @OneToMany(mappedBy = "patientcouch")
+  Set<PatientCouch> couchs;
 
 
   public Patient() {
   }
 
-  public Patient(long id, String run, String name, String last_name, String gender, String address, Set<Bed> beds, Set<Couch> couchs) {
+  public Patient(long id, String run, String name, String last_name, String gender, String address, Set<PatientBed> beds, Set<PatientCouch> couchs) {
     this.id = id;
     this.run = run;
     this.name = name;
@@ -116,19 +110,19 @@ public class Patient {
     this.address = address;
   }
 
-  public Set<Bed> getBeds() {
+  public Set<PatientBed> getBeds() {
     return this.beds;
   }
 
-  public void setBeds(Set<Bed> beds) {
+  public void setBeds(Set<PatientBed> beds) {
     this.beds = beds;
   }
 
-  public Set<Couch> getCouchs() {
+  public Set<PatientCouch> getCouchs() {
     return this.couchs;
   }
 
-  public void setCouchs(Set<Couch> couchs) {
+  public void setCouchs(Set<PatientCouch> couchs) {
     this.couchs = couchs;
   }
 
@@ -162,6 +156,16 @@ public class Patient {
     return this;
   }
 
+  public Patient beds(Set<PatientBed> beds) {
+    this.beds = beds;
+    return this;
+  }
+
+  public Patient couchs(Set<PatientCouch> couchs) {
+    this.couchs = couchs;
+    return this;
+  }
+
   @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -192,5 +196,6 @@ public class Patient {
       "}";
   }
 
+  
   
 }

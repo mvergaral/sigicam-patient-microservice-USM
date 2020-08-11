@@ -1,0 +1,112 @@
+package CalceTeam.Microservice.models;
+
+import java.util.Objects;
+import java.util.Set;
+import java.util.HashSet;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import CalceTeam.Microservice.models.*;
+
+@Entity
+@Table(name = "patientBed")
+public class PatientBed {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "patientBed_id", nullable = false, unique = true)
+  private long id;
+
+  @ManyToOne
+  @JoinColumn(name = "patient_id")
+  Patient patientbed;
+
+  @ManyToOne
+  @JoinColumn(name = "bed_id")
+  Bed bed;
+
+
+  public PatientBed() {
+  }
+
+  public PatientBed(long id, Patient patientbed, Bed bed) {
+    this.id = id;
+    this.patientbed = patientbed;
+    this.bed = bed;
+  }
+
+  public long getId() {
+    return this.id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public Patient getPatientbed() {
+    return this.patientbed;
+  }
+
+  public void setPatientbed(Patient patientbed) {
+    this.patientbed = patientbed;
+  }
+
+  public Bed getBed() {
+    return this.bed;
+  }
+
+  public void setBed(Bed bed) {
+    this.bed = bed;
+  }
+
+  public PatientBed id(long id) {
+    this.id = id;
+    return this;
+  }
+
+  public PatientBed patientbed(Patient patientbed) {
+    this.patientbed = patientbed;
+    return this;
+  }
+
+  public PatientBed bed(Bed bed) {
+    this.bed = bed;
+    return this;
+  }
+
+  @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof PatientBed)) {
+            return false;
+        }
+        PatientBed patientBed = (PatientBed) o;
+        return id == patientBed.id && Objects.equals(patientbed, patientBed.patientbed) && Objects.equals(bed, patientBed.bed);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, patientbed, bed);
+  }
+
+  @Override
+  public String toString() {
+    return "{" +
+      " id='" + getId() + "'" +
+      ", patientbed='" + getPatientbed() + "'" +
+      ", bed='" + getBed() + "'" +
+      "}";
+  }
+
+  
+}
