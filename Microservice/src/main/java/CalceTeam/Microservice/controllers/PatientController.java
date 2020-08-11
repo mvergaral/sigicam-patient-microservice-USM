@@ -66,7 +66,6 @@ public class PatientController {
       }
     }
 
-<<<<<<< Updated upstream
   @GetMapping("/{id}/camas")
     public ResponseEntity<Set<Bed>> getPatientBeds(@PathVariable("id") long id){
       Patient patient = service.findById(id);
@@ -97,7 +96,7 @@ public class PatientController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
     }
-=======
+
   @PutMapping("/{id}/assignBed")
     public ResponseEntity<Void> assignBedtoPatient(@PathVariable("id") long id, @Param("id_bed") long id_bed ){
       if(service.assignBedtoPatient(id_bed, id)){
@@ -118,5 +117,5 @@ public class PatientController {
       }
     }
     
->>>>>>> Stashed changes
+
 }
