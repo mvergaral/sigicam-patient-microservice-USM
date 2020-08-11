@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 import Table from 'react-bootstrap/Table'
 import InputGroup from 'react-bootstrap/InputGroup'
 import FormControl from 'react-bootstrap/FormControl'
@@ -8,7 +9,8 @@ class Tabla extends React.Component {
     constructor(){
         super()
         this.state = {
-            filtro: ""
+						filtro: "",
+						patients: [] 
         }
         this.handleSearchBar = this.handleSearchBar.bind(this)
     }
@@ -21,27 +23,35 @@ class Tabla extends React.Component {
         
     }
     
-    
-        
+		componentDidMount() {
+			fetch('http://localhost:8000/patient/all')
+				.then(res => res.json())
+				.then((data) => {
+					this.setState({ patients: data })
+				})
+				.catch(console.log)
+		}
     render(){
-        const RowPaciente = (paciente)=>{
+    
+        const RowPaciente = (patient)=>{
             
             //3 lineas para el filtro, y solo checkea datos que sean strings
-            const values = Object.entries(paciente).map((valor)=>{return valor[1]}) 
+            const values = Object.entries(patient).map((valor)=>{return valor[1]}) 
             const stringValues = values.filter(  foo => typeof foo === "string" )
             const includeFilters = stringValues.map((bar)=>{return bar.includes(this.state.filtro)}).includes(true)
             return(
                 includeFilters &&
                 <tr 
-                key ={paciente.id} 
-                onClick = {() => this.props.handleTableClick(paciente)}
+                key ={patient.id} 
+                onClick = {() => this.props.handleTableClick(patient)}
                 >
-                    <td>{paciente.id}</td><td>{paciente.text}</td>                   
+                    <td>{patient.id}</td><td>{patient.name}</td>                   
                 </tr>
             )
         }
-        
         return(
+            
+            
             <div >
                 <InputGroup className="mb-3">
                         <InputGroup.Prepend>
@@ -58,11 +68,12 @@ class Tabla extends React.Component {
                         </tr>
                     </thead>
                     <tbody >
-                        {todosData.map((dataPaciente) => RowPaciente(dataPaciente))}
+                        {this.state.patients.map( patient => RowPaciente(patient))}
                     </tbody>
                 </Table>
               
             </div>
+          
 
         )
     }
