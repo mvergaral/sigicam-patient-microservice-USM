@@ -37,7 +37,7 @@ class Tabla extends React.Component {
             return(
             <tr key={patient.id}>
                 <td>{patient.id}</td>
-                <td>{patient.name}</td>
+            <td>{patient.name} {patient.last_name}</td>
                 <td>{patient.run}</td>
                 <td className="d-flex justify-content-between">
                     <Link type="button" className="btn btn-primary"

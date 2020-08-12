@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import '../index.css'
+import Dropdown from 'react-dropdown';
 
 class Patient extends Component {
   constructor() {
     super()
     this.state = {
+      id:-1,
       name: "",
       last_name: "",
       run: "",
@@ -15,8 +17,16 @@ class Patient extends Component {
       bed_id: null,
       couch_id: null,
       available_beds: [],
-      available_couchs: []
+      available_couchs: [],
+      new_bed: -1,
+      new_bed_str: '',
+      new_couch: -1,
+      new_couch_str: ''
     }
+    this.setBed = this.setBed.bind(this);
+    this.setCouch = this.setCouch.bind(this);
+    this.dropBed = this.dropBed.bind(this);
+    this.dropCouch = this.dropCouch.bind(this);
   }
   componentDidMount(){
     console.log(this.props.location.state.id)
@@ -24,47 +34,102 @@ class Patient extends Component {
       .then(data => data.json())
       .then(data => {
         this.setState({
+          id: data.id,
           name: data.name,
           last_name: data.last_name,
           run: data.run,
           gender: data.gender,
           address: data.address,
-          is_using_bed: data.is_using_bed,
-          is_using_couch: data.is_using_couch
         })
-        if(data.is_using_bed){
-          //pedir id de cama
-        }
-        if(data.is_using_couch){
-          //pedir id de sillon
-        }
+        fetch(`http://localhost:8000/patient/`+this.props.location.state.id+`/activeBed`)
+        .then(data => data.json())
+        .then(data => {
+          this.setState({bed_id: data})
+          this.setState({ is_using_bed: true })
+        })
+        fetch(`http://localhost:8000/patient/` + this.props.location.state.id + `/activeCouch`)
+          .then(data => data.json())
+          .then(data => {
+            this.setState({ couch_id: data })
+            this.setState({ is_using_couch: true })
+          })
+      })
+    fetch("https://recuperacionisw.herokuapp.com/api/camas?disponibilidad=disponible")
+      .then(data => data.json())
+      .then(data => {
+        this.setState({ available_beds: data })
+      })
+    fetch("https://quimioterapia.herokuapp.com/api/sillon")
+      .then(data => data.json())
+      .then(data => {
+        this.setState({ available_couchs: data })
       })
   }
   setBed(){
-
+    fetch('http://localhost:8000/patient/' + this.state.id +'/assignBed?id_bed='+this.state.new_bed, { method: 'PUT' })
+    .then(data =>{
+      if(data.ok){
+        alert("Asignado")
+        window.location.reload(false)
+      }
+      else{
+        alert("Error")
+      }
+    })
   }
   setCouch(){
-
+    fetch('http://localhost:8000/patient/' +this.state.id+ '/assignCouch?id_couch=' + this.state.new_couch, { method: 'PUT' })
+      .then(data => {
+        if (data.ok) {
+          alert("Asignado")
+          window.location.reload(false)
+        }
+        else {
+          alert("Error")
+        }
+      })
+  }
+  getNewBed(bed_id, room_id){
+    this.setState({new_bed: bed_id})
+    this.setState({ new_bed_str: "Sala: " + room_id + " Cama: " + bed_id})
+  }
+  getNewCouch(couch_id, room_id) {
+    this.setState({ new_couch: couch_id })
+    this.setState({ new_couch_str: "Sala: " + room_id + " Cama: " + couch_id })
   }
 
+  dropBed(){
+    fetch('http://localhost:8000/patient/' + this.state.id + '/deallocateBed', { method: 'PUT' })
+    .then(data => {
+      if(data.ok){
+        alert("Eliminado")
+        window.location.reload(false)
+      }
+    })
 
+  }
+  dropCouch() {
+    fetch('http://localhost:8000/patient/' + this.state.id + '/deallocateCouch', { method: 'PUT' })
+      .then(data => {
+        if (data.ok) {
+          alert("Eliminado")
+          window.location.reload(false)
+        }
+      })
+
+  }
   render() {
     const bed = () => {
       if(this.state.is_using_bed){
-        return (<td>{this.state.bed_id} <button type="button" class="btn btn-danger">Eliminar</button></td>)
+        return (<td>{this.state.bed_id} <button type="button" class="btn btn-danger" onClick={this.dropBed}>Eliminar</button></td>)
       }
       else{
-        fetch("https://recuperacionisw.herokuapp.com/api/camas?disponibilidad=disponible")
-          .then(data => data.json())
-          .then(data => {
-            this.setState({ available_beds: data })
-          })
         return(
           <td>
             <div className="dropdown">
-              <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Seleccionar cama</button>
+        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.state.new_bed == -1 ? "Seleccionar" : this.state.new_bed_str}</button>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {this.state.available_beds.map((bed) => <a className="dropdown-item">Sala: {bed.sala} Cama: {bed.id}</a>)}
+                {this.state.available_beds.map((bed) => <a className="dropdown-item" onClick={() => this.getNewBed(bed.id, bed.sala)}>Sala: {bed.sala} Cama: {bed.id}</a>)}
               </div>
             </div>
             <button type="button" className="btn btn-primary" onClick={this.setBed}>Asignar</button>
@@ -74,20 +139,15 @@ class Patient extends Component {
     }
     const couch = () => {
       if (this.state.is_using_couch) {
-        return (<td>{this.state.couch_id} <button type="button" class="btn btn-danger">Eliminar</button></td>)
+        return (<td>{this.state.couch_id} <button type="button" class="btn btn-danger" onClick={this.dropCouch}>Eliminar</button></td>)
       }
       else {
-        fetch("https://quimioterapia.herokuapp.com/api/sillon")
-          .then(data => data.json())
-          .then(data => {
-            this.setState({ available_couchs: data })
-          })
         return (
           <td>
             <div className="dropdown">
-              <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Seleccionar cama</button>
+              <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{this.state.new_couch == -1 ? "Seleccionar" : this.state.new_couch_str}</button>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        {this.state.available_couchs.map((couch) => <a className="dropdown-item">Sala: {couch.idSala} Sillon: {couch.id}</a>)}
+                {this.state.available_couchs.map((couch) => <a className="dropdown-item" onClick={() => this.getNewCouch(couch.id, couch.idSala)}>Sala: {couch.idSala} Sillón: {couch.id}</a>)}
               </div>
             </div>
             <button type="button" className="btn btn-primary" onClick={this.setCouch}>Asignar</button>
