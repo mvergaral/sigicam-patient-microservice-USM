@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom'
 import Table from 'react-bootstrap/Table'
 class SearchForm extends React.Component {
   constructor(props) {
@@ -48,12 +49,20 @@ class SearchForm extends React.Component {
     .then((data) => {
       this.setState({ patient: data })
     })
-    
-    //alert('A name was submitted: ' + this.state.value);
-    
-    
-
   }
+  deletePatient(id) {
+    fetch('http://localhost:8000/patient/' + id + '/delete', { method: 'DELETE' })
+      .then(data => {
+        if (data.ok) {
+          alert("Paciente eliminado con exito")
+          window.location.reload(false)
+        }
+        else {
+          alert("Error")
+        }
+      })
+  }
+
   render() {
     
     const RowPaciente = (patient)=>{
@@ -72,11 +81,16 @@ class SearchForm extends React.Component {
       <tbody>
       <tr>
           <td>{patient.id}</td>
-          <td>{patient.name}</td>
+              <td>{patient.name} {patient.last_name}</td>
           <td>{patient.run}</td>
           <td className="d-flex justify-content-between">
-            <button type="button" className="btn btn-primary">Ver</button>
-            <button type="button" className="btn btn-danger">Eliminar</button></td>
+                <Link type="button" className="btn btn-primary"
+                  to={{
+                    pathname: "/patient",
+                    state: { id: patient.id }
+                  }}
+                >Ver</Link>
+                <button type="button" className="btn btn-danger" onClick={() => this.deletePatient(patient.id)}>Eliminar</button></td>
       </tr>
       </tbody>
       </Table>

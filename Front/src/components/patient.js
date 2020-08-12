@@ -71,25 +71,28 @@ class Patient extends Component {
   }
 
   setApiBed() {
-    fetch("https://recuperacionisw.herokuapp.com/api/camas/" + this.new_bed, {
+    fetch("https://recuperacionisw.herokuapp.com/api/camas/" + this.state.new_bed, {
       method: "PUT",
-      body: JSON.stringify({ id: this.bed_id, estado: "ocupada" })
+      body: JSON.stringify({ 
+        id: this.state.new_bed, 
+        estado: "ocupada"
+      })
     })
   }
   dropApiBed() {
-    fetch("https://recuperacionisw.herokuapp.com/api/camas/" + this.bed_id, {
+    fetch("https://recuperacionisw.herokuapp.com/api/camas/" + this.state.bed_id, {
       method: "PUT",
-      body: JSON.stringify({ id: this.bed_id, estado: "disponible" })
+      body: JSON.stringify({ id: this.state.bed_id, estado: "disponible" })
     })
   }
 
   setApiCouch() {
-    fetch("https://quimioterapia.herokuapp.com/api/sillon/"+this.state.couch_id)
+    fetch("https://quimioterapia.herokuapp.com/api/sillon/"+this.state.new_couch)
     .then(data => {
       fetch("https://quimioterapia.herokuapp.com/api/sillon/", {
         method: "PUT",
         body: JSON.stringify({ 
-          id: this.couch_id, 
+          id: this.state.new_couch, 
           asignado: "true",
           activo: data.activo,
           idSala: data.idSala
@@ -103,7 +106,7 @@ class Patient extends Component {
         fetch("https://quimioterapia.herokuapp.com/api/sillon/", {
           method: "PUT",
           body: JSON.stringify({
-            id: this.couch_id,
+            id: this.state.couch_id,
             asignado: "false",
             activo: data.activo,
             idSala: data.idSala
@@ -113,32 +116,42 @@ class Patient extends Component {
   }
 
   setBed(){
-    fetch('http://localhost:8000/patient/' + this.state.id +'/assignBed?id_bed='+this.state.new_bed, { method: 'PUT' })
-    .then(data =>{
-      if(data.ok){
-        this.setApiBed()
-        alert("Asignado")
-        window.location.reload(false)
-      }
-      else{
-        alert("Error")
-      }
-    })
+    if(this.state.new_bed != -1){
+      fetch('http://localhost:8000/patient/' + this.state.id +'/assignBed?id_bed='+this.state.new_bed, { method: 'PUT' })
+      .then(data =>{
+        if(data.ok){
+          this.setApiBed()
+          alert("Asignado")
+          window.location.reload(false)
+        }
+        else{
+          alert("Error")
+        }
+      })
+    }
+    else{
+      alert("Selecciona una cama")
+    }
   }
 
 
   setCouch(){
-    fetch('http://localhost:8000/patient/' +this.state.id+ '/assignCouch?id_couch=' + this.state.new_couch, { method: 'PUT' })
-      .then(data => {
-        if (data.ok) {
-          this.setApiCouch()
-          alert("Asignado")
-          window.location.reload(false)
-        }
-        else {
-          alert("Error")
-        }
-      })
+    if(this.state.new_couch != -1){
+      fetch('http://localhost:8000/patient/' +this.state.id+ '/assignCouch?id_couch=' + this.state.new_couch, { method: 'PUT' })
+        .then(data => {
+          if (data.ok) {
+            this.setApiCouch()
+            alert("Asignado")
+            window.location.reload(false)
+          }
+          else {
+            alert("Error")
+          }
+        })
+    }
+    else{
+      alert("Selecciona un sillon")
+    }
   }
   getNewBed(bed_id, room_id){
     this.setState({new_bed: bed_id})
