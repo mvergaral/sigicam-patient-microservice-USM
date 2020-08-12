@@ -48,7 +48,7 @@ public class PatientController {
     public ResponseEntity<Patient> getPatientByRun(@Param("run") String run){
       Patient patient = service.findByRun(run);
       if (patient != null){
-        return new ResponseEntity<>(patient, HttpStatus.OK);
+        return new ResponseEntity<>(patient, HttpStatus.FOUND);
       }
       else{
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
