@@ -16,4 +16,7 @@ public interface PatientBedRepository extends JpaRepository<PatientBed , Seriali
   @Query(value = "SELECT MAX(patient_bed_id) from patient_bed where patient_id = ?1", nativeQuery = true)
   public Long getLastBedOfPatient(long id_patient);  
 
+  @Query(value = "SELECT MAX(patient_bed_id) from patient_bed where patient_id = ?1 AND status = 'ACTIVE' ", nativeQuery = true)
+  public Long getActiveBedIdOfPatient(long id_patient);
+
 }

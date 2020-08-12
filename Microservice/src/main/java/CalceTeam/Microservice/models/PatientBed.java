@@ -28,14 +28,14 @@ public class PatientBed {
   private long id;
 
   @ManyToOne
-  @JoinColumn(name = "patient_id")
+  @JoinColumn(name = "patient_id", nullable = false)
   Patient patientbed;
 
   @ManyToOne
-  @JoinColumn(name = "bed_id")
+  @JoinColumn(name = "bed_id", nullable = false)
   Bed bed;
 
-  @Column(name = "status")
+  @Column(name = "status", nullable = false)
   String status;
 
 

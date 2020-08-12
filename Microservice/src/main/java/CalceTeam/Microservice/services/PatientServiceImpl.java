@@ -80,7 +80,7 @@ public class PatientServiceImpl{
         }
     }
 
-    public Patient findByRun(int run){
+    public Patient findByRun(String run){
         try{
             return repository.findByRun(run);
         }catch(Exception e){
@@ -188,6 +188,14 @@ public class PatientServiceImpl{
         }catch(Exception e){
             return 2;
         }
+    }
+
+    public Long getAssignedBed(long id_patient){
+        return patientBedRepository.getActiveBedIdOfPatient(id_patient);
+    }
+
+    public Long getAssignedCouch(long id_patient){
+        return patientCouchRepository.getActiveCouchIdOfPatient(id_patient);
     }
 }
 

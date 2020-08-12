@@ -27,11 +27,11 @@ public class PatientCouch {
   private long id;
 
   @ManyToOne()
-  @JoinColumn(name = "patient_id")
+  @JoinColumn(name = "patient_id", nullable = false)
   Patient patientcouch;
 
   @ManyToOne()
-  @JoinColumn(name = "couch_id")
+  @JoinColumn(name = "couch_id", nullable = false)
   Couch couch;
 
   @Column(name = "status")

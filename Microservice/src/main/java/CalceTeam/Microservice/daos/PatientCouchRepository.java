@@ -17,4 +17,7 @@ public interface PatientCouchRepository extends JpaRepository<PatientCouch , Ser
   @Query(value = "SELECT MAX(patient_couch_id) from patient_couch where patient_id = ?1", nativeQuery = true)
   public Long getLastCouchOfPatient(long id_patient);  
 
+  @Query(value = "SELECT MAX(patient_couch_id) from patient_couch where patient_id = ?1 AND status = 'ACTIVE' ", nativeQuery = true)
+  public Long getActiveCouchIdOfPatient(long id_patient);
+
 }

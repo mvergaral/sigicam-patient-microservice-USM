@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST, RequestMethod.PUT})
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/patient")
 public class PatientController {
   @Autowired
@@ -44,8 +44,8 @@ public class PatientController {
 
     }
 
-  @GetMapping("/run/{run}")
-    public ResponseEntity<Patient> getPatientByRun(@PathVariable("run") int run){
+  @GetMapping("/findByRun")
+    public ResponseEntity<Patient> getPatientByRun(@Param("run") String run){
       Patient patient = service.findByRun(run);
       if (patient != null){
         return new ResponseEntity<>(patient, HttpStatus.OK);
@@ -143,4 +143,24 @@ public class PatientController {
       }
     }
 
+  @GetMapping("/{id}/activeBed")
+    public ResponseEntity<Long> getAssignedBed(@PathVariable long id){
+      Long response = service.getAssignedBed(id);
+      if(response != null){
+        return new ResponseEntity<>(response, HttpStatus.FOUND);
+      }
+
+      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+  @GetMapping("/{id}/activeCouch")
+    public ResponseEntity<Long> getAssignedCouch(@PathVariable long id){
+      Long response = service.getAssignedCouch(id);
+      if(response != null){
+        return new ResponseEntity<>(response, HttpStatus.FOUND);
+      }
+
+      return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+  
 }
