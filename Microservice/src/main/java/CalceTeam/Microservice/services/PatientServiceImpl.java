@@ -95,8 +95,14 @@ public class PatientServiceImpl{
                 PatientBed patientBed = patientBedRepository.findById(idPatientBed);
                 if(patientBed.getStatus().equals("INACTIVE")){
                     PatientBed bedToPatient = new PatientBed();
-                    bedToPatient.setPatientbed(repository.findById(id_patient));
-                    bedToPatient.setBed(bedRepository.findById(id_bed));
+                    bedToPatient.setPatient(repository.findById(id_patient));
+                    Bed bed = bedRepository.findById(id_bed);
+                    if(bed == null){
+                        bed = new Bed();
+                        bed.setId(id_bed);
+                        bedRepository.save(bed);
+                    }
+                    bedToPatient.setBed(bed);
                     bedToPatient.setStatus("ACTIVE");
                     patientBedRepository.save(bedToPatient);
                     return 0;
@@ -104,8 +110,14 @@ public class PatientServiceImpl{
                 return 1;
             }
             PatientBed bedToPatient = new PatientBed();
-            bedToPatient.setPatientbed(repository.findById(id_patient));
-            bedToPatient.setBed(bedRepository.findById(id_bed));
+            bedToPatient.setPatient(repository.findById(id_patient));
+            Bed bed = bedRepository.findById(id_bed);
+            if(bed == null){
+                bed = new Bed();
+                bed.setId(id_bed);
+                bedRepository.save(bed);
+            }
+            bedToPatient.setBed(bed);
             bedToPatient.setStatus("ACTIVE");
             patientBedRepository.save(bedToPatient);
             return 0;
@@ -123,8 +135,14 @@ public class PatientServiceImpl{
                 PatientCouch patientCouch = patientCouchRepository.findById(idPatientCouch);
                 if(patientCouch.getStatus().equals("INACTIVE")){
                     PatientCouch couchToPatient = new PatientCouch();
-                    couchToPatient.setPatientcouch(repository.findById(id_patient));
-                    couchToPatient.setCouch(couchRepository.findById(id_couch));
+                    couchToPatient.setPatient(repository.findById(id_patient));
+                    Couch couch = couchRepository.findById(id_couch);
+                    if(couch == null){
+                        couch = new Couch();
+                        couch.setId(id_couch);
+                        couchRepository.save(couch);
+                    }
+                    couchToPatient.setCouch(couch);
                     couchToPatient.setStatus("ACTIVE");
                     patientCouchRepository.save(couchToPatient);
                     return 0;
@@ -132,8 +150,14 @@ public class PatientServiceImpl{
                 return 1;
             }
             PatientCouch couchToPatient = new PatientCouch();
-            couchToPatient.setPatientcouch(repository.findById(id_patient));
-            couchToPatient.setCouch(couchRepository.findById(id_couch));
+            couchToPatient.setPatient(repository.findById(id_patient));
+            Couch couch = couchRepository.findById(id_couch);
+            if(couch == null){
+                couch = new Couch();
+                couch.setId(id_couch);
+                couchRepository.save(couch);
+            }
+            couchToPatient.setCouch(couch);
             couchToPatient.setStatus("ACTIVE");
             patientCouchRepository.save(couchToPatient);
             return 0;

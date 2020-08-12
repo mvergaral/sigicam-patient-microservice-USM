@@ -19,7 +19,6 @@ import javax.persistence.OneToMany;
 @Table(name = "bed")
 public class Bed {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "bed_id", nullable = false, unique = true)
   private long id;
 

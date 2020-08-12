@@ -28,7 +28,7 @@ public class PatientCouch {
 
   @ManyToOne()
   @JoinColumn(name = "patient_id", nullable = false)
-  Patient patientcouch;
+  Patient patient;
 
   @ManyToOne()
   @JoinColumn(name = "couch_id", nullable = false)
@@ -42,9 +42,9 @@ public class PatientCouch {
   public PatientCouch() {
   }
 
-  public PatientCouch(long id, Patient patientcouch, Couch couch, String status) {
+  public PatientCouch(long id, Patient patient, Couch couch, String status) {
     this.id = id;
-    this.patientcouch = patientcouch;
+    this.patient = patient;
     this.couch = couch;
     this.status = status;
   }
@@ -57,12 +57,12 @@ public class PatientCouch {
     this.id = id;
   }
 
-  public Patient getPatientcouch() {
-    return this.patientcouch;
+  public Patient getPatient() {
+    return this.patient;
   }
 
-  public void setPatientcouch(Patient patientcouch) {
-    this.patientcouch = patientcouch;
+  public void setPatient(Patient patient) {
+    this.patient = patient;
   }
 
   public Couch getCouch() {
@@ -86,8 +86,8 @@ public class PatientCouch {
     return this;
   }
 
-  public PatientCouch patientcouch(Patient patientcouch) {
-    this.patientcouch = patientcouch;
+  public PatientCouch patient(Patient patient) {
+    this.patient = patient;
     return this;
   }
 
@@ -109,24 +109,23 @@ public class PatientCouch {
             return false;
         }
         PatientCouch patientCouch = (PatientCouch) o;
-        return id == patientCouch.id && Objects.equals(patientcouch, patientCouch.patientcouch) && Objects.equals(couch, patientCouch.couch) && Objects.equals(status, patientCouch.status);
+        return id == patientCouch.id && Objects.equals(patient, patientCouch.patient) && Objects.equals(couch, patientCouch.couch) && Objects.equals(status, patientCouch.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, patientcouch, couch, status);
+    return Objects.hash(id, patient, couch, status);
   }
 
   @Override
   public String toString() {
     return "{" +
       " id='" + getId() + "'" +
-      ", patientcouch='" + getPatientcouch() + "'" +
+      ", patient='" + getPatient() + "'" +
       ", couch='" + getCouch() + "'" +
       ", status='" + getStatus() + "'" +
       "}";
   }
-  
-  
 
+  
 }

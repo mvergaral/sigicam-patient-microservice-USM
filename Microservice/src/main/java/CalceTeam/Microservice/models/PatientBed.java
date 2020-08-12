@@ -29,7 +29,7 @@ public class PatientBed {
 
   @ManyToOne
   @JoinColumn(name = "patient_id", nullable = false)
-  Patient patientbed;
+  Patient patient;
 
   @ManyToOne
   @JoinColumn(name = "bed_id", nullable = false)
@@ -40,12 +40,13 @@ public class PatientBed {
 
 
 
+
   public PatientBed() {
   }
 
-  public PatientBed(long id, Patient patientbed, Bed bed, String status) {
+  public PatientBed(long id, Patient patient, Bed bed, String status) {
     this.id = id;
-    this.patientbed = patientbed;
+    this.patient = patient;
     this.bed = bed;
     this.status = status;
   }
@@ -58,12 +59,12 @@ public class PatientBed {
     this.id = id;
   }
 
-  public Patient getPatientbed() {
-    return this.patientbed;
+  public Patient getPatient() {
+    return this.patient;
   }
 
-  public void setPatientbed(Patient patientbed) {
-    this.patientbed = patientbed;
+  public void setPatient(Patient patient) {
+    this.patient = patient;
   }
 
   public Bed getBed() {
@@ -87,8 +88,8 @@ public class PatientBed {
     return this;
   }
 
-  public PatientBed patientbed(Patient patientbed) {
-    this.patientbed = patientbed;
+  public PatientBed patient(Patient patient) {
+    this.patient = patient;
     return this;
   }
 
@@ -110,23 +111,24 @@ public class PatientBed {
             return false;
         }
         PatientBed patientBed = (PatientBed) o;
-        return id == patientBed.id && Objects.equals(patientbed, patientBed.patientbed) && Objects.equals(bed, patientBed.bed) && Objects.equals(status, patientBed.status);
+        return id == patientBed.id && Objects.equals(patient, patientBed.patient) && Objects.equals(bed, patientBed.bed) && Objects.equals(status, patientBed.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, patientbed, bed, status);
+    return Objects.hash(id, patient, bed, status);
   }
 
   @Override
   public String toString() {
     return "{" +
       " id='" + getId() + "'" +
-      ", patientbed='" + getPatientbed() + "'" +
+      ", patient='" + getPatient() + "'" +
       ", bed='" + getBed() + "'" +
       ", status='" + getStatus() + "'" +
       "}";
   }
+  
   
   
 }

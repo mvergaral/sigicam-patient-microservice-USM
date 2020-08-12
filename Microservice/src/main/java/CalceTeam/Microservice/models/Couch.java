@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "couch")
 public class Couch {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "couch_id", nullable = false, unique = true)
   private long id;
 

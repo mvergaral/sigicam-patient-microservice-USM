@@ -42,11 +42,11 @@ public class Patient {
   String address;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "patientbed",cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "patient",cascade = CascadeType.REMOVE)
   Set<PatientBed> beds;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "patientcouch",cascade = CascadeType.REMOVE)
+  @OneToMany(mappedBy = "patient",cascade = CascadeType.REMOVE)
   Set<PatientCouch> couchs;
 
 
