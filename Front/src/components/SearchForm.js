@@ -1,20 +1,85 @@
 import React, { Component } from 'react';
-
+import Table from 'react-bootstrap/Table'
 class SearchForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: '' };
-    this.handleChange = this.handleChange.bind(this);
+    this.state = { 
+      value: '',
+      campo: '',
+      patient: ''
+    };
+    this.handleChangeBox = this.handleChangeBox.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangeBar = this.handleChangeBar.bind(this);
   }
+  handleChangeBar(event){
+    const {name,value} = event.target
+    this.setState({ value: value }); 
+  }
+  handleChangeBox(event) {
+    const {name,value} = event.target
+    this.setState({ campo: value }); 
 
-  handleChange(event) { this.setState({ value: event.target.value }); }
+   
+  
+   
+    
+    }
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
-  }
+    const {campo,value} = this.state
+    let url
+    if (campo === 'id'){
+      url = 'http://localhost:8000/patient/'
+    }else if(campo === 'run'){
+      url = 'http://localhost:8000/patient/findByRun?run='
+    }
+    console.log(url)
+    fetch(url+value)
+    .then(response => {
+      console.log(response)
+      console.log(response.status)
+      if (!(response.status === 302)){
+       
+        alert("Busqueda Fallida")
+        return ""
+      }
+      return response.json()
+    })
+    .then((data) => {
+      this.setState({ patient: data })
+    })
+    
+    //alert('A name was submitted: ' + this.state.value);
+    
+    
 
+  }
   render() {
+    
+    const RowPaciente = (patient)=>{
+      
+
+      return(
+      <Table striped bordered>
+        <thead>
+          <tr>
+              <th className="col-1">Id</th>
+              <th className="col-3">Nombre</th>
+              <th className="col-3">Run</th>
+              <th className="col-1"></th>
+          </tr>
+        </thead>
+      <tbody>
+      <tr>
+          <td>{patient.id}</td>
+          <td>{patient.name}</td>
+          <td>{patient.run}</td>{/* añadir redireccion a la vista del paciente*/}
+          <td className="d-flex justify-content-between"><button type="button" className="btn btn-primary">Ver</button><button type="button" className="btn btn-danger">Eliminar</button></td>
+      </tr>
+      </tbody>
+      </Table>
+    )
+        }
     return (
       <div className="container">
         <div className="row mt-5">
@@ -24,34 +89,29 @@ class SearchForm extends React.Component {
             </div>
             <div className="row">
               <div className="form-check form-check-inline">
-                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" />
-                <label className="form-check-label" for="inlineRadio1">Id</label>
+                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="id" onChange = {this.handleChangeBox}/>
+                <label className="form-check-label" htmlFor="inlineRadio1">Id</label>
               </div>
             </div>
             <div className="row">
               <div className="form-check form-check-inline">
-                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
-                <label class="form-check-label" for="inlineRadio2">Rut</label>
+                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="run" onChange = {this.handleChangeBox}/>
+                <label className="form-check-label" htmlFor="inlineRadio2">Rut</label>
               </div>
             </div>
-            <div className="row">
-              <div className="form-check form-check-inline">
-                <input className="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
-                <label class="form-check-label" for="inlineRadio2">Nombre</label>
-              </div>
-            </div>
+            
           </div>
           <div className="col-9">
             <div className="row">
               <div className="col">
                 <label >Buscar</label>
-                <input className="form-control" type="text" value={this.state.value} onChange={this.handleChange} />
-                <input type="submit" value="Submit" className="btn btn-primary" />
+                <input className="form-control" type="text" value={this.state.value} onChange={this.handleChangeBar} />
+                <input type="submit" value="Submit" className="btn btn-primary" onClick ={this.handleSubmit} />
               </div>
             </div>
             <div className="row">
               <div className="col">
-                {/*mostrar paciente*/}
+                {!(this.state.patient === '') && <div>{RowPaciente(this.state.patient)}</div>} 
               </div>
             </div>
           </div>
