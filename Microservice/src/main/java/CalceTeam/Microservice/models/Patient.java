@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.CascadeType;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import CalceTeam.Microservice.models.*;
 
 
@@ -41,10 +41,12 @@ public class Patient {
   @Column(name = "address", nullable = false)
   String address;
 
-  @OneToMany(mappedBy = "patientbed")
+  @JsonIgnore
+  @OneToMany(mappedBy = "patientbed",cascade = CascadeType.REMOVE)
   Set<PatientBed> beds;
 
-  @OneToMany(mappedBy = "patientcouch")
+  @JsonIgnore
+  @OneToMany(mappedBy = "patientcouch",cascade = CascadeType.REMOVE)
   Set<PatientCouch> couchs;
 
 

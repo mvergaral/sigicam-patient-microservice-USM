@@ -4,8 +4,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.HashSet;
 
-import CalceTeam.Microservice.models.Bed;
-import CalceTeam.Microservice.models.Couch;
+import CalceTeam.Microservice.models.*;
 
 
 public class PatientDto {
@@ -15,13 +14,14 @@ public class PatientDto {
   String last_name;
   String gender;
   String address;
-  Set<Bed> beds = new HashSet<>();
-  Set<Couch> couchs = new HashSet<>();
+  Set<PatientBed> beds;
+  Set<PatientCouch> couchs;
+
 
   public PatientDto() {
   }
 
-  public PatientDto(long id, String run, String name, String last_name, String gender, String address, Set<Bed> beds, Set<Couch> couchs) {
+  public PatientDto(long id, String run, String name, String last_name, String gender, String address, Set<PatientBed> beds, Set<PatientCouch> couchs) {
     this.id = id;
     this.run = run;
     this.name = name;
@@ -80,19 +80,19 @@ public class PatientDto {
     this.address = address;
   }
 
-  public Set<Bed> getBeds() {
+  public Set<PatientBed> getBeds() {
     return this.beds;
   }
 
-  public void setBeds(Set<Bed> beds) {
+  public void setBeds(Set<PatientBed> beds) {
     this.beds = beds;
   }
 
-  public Set<Couch> getCouchs() {
+  public Set<PatientCouch> getCouchs() {
     return this.couchs;
   }
 
-  public void setCouchs(Set<Couch> couchs) {
+  public void setCouchs(Set<PatientCouch> couchs) {
     this.couchs = couchs;
   }
 
@@ -126,12 +126,12 @@ public class PatientDto {
     return this;
   }
 
-  public PatientDto beds(Set<Bed> beds) {
+  public PatientDto beds(Set<PatientBed> beds) {
     this.beds = beds;
     return this;
   }
 
-  public PatientDto couchs(Set<Couch> couchs) {
+  public PatientDto couchs(Set<PatientCouch> couchs) {
     this.couchs = couchs;
     return this;
   }
@@ -166,4 +166,5 @@ public class PatientDto {
       "}";
   }
 
+ 
 }

@@ -59,11 +59,10 @@ public class PatientServiceImpl{
         }
     }
 
-    public boolean update(PatientDto dto) {
+    public boolean update(long id_patient, PatientDto dto) {
         try{
-            Patient patient = repository.findById(dto.getId());
-            System.out.println(patient);
-            System.out.println(dto);
+            dto.setId(id_patient);
+            Patient patient = repository.findById(id_patient);
             mapper.updatePatientFromDto(dto, patient);
             repository.save(patient);
             return true;
@@ -89,27 +88,58 @@ public class PatientServiceImpl{
         }
     }
 
-    public boolean assignBedtoPatient(long id_bed, long id_patient){
+    public int assignBedtoPatient(long id_bed, long id_patient){
         try{
+            Long idPatientBed = patientBedRepository.getLastBedOfPatient(id_patient);
+            if(idPatientBed != null ){
+                PatientBed patientBed = patientBedRepository.findById(idPatientBed);
+                if(patientBed.getStatus().equals("INACTIVE")){
+                    PatientBed bedToPatient = new PatientBed();
+                    bedToPatient.setPatientbed(repository.findById(id_patient));
+                    bedToPatient.setBed(bedRepository.findById(id_bed));
+                    bedToPatient.setStatus("ACTIVE");
+                    patientBedRepository.save(bedToPatient);
+                    return 0;
+                }
+                return 1;
+            }
             PatientBed bedToPatient = new PatientBed();
             bedToPatient.setPatientbed(repository.findById(id_patient));
             bedToPatient.setBed(bedRepository.findById(id_bed));
+            bedToPatient.setStatus("ACTIVE");
             patientBedRepository.save(bedToPatient);
-            return true;
+            return 0;
         }catch(Exception e){
-            return false;
+            return 2;
         }
+
+        
     }
 
-    public boolean assignCouchtoPatient(long id_couch, long id_patient){
+    public int assignCouchtoPatient(long id_couch, long id_patient){
         try{
+            Long idPatientCouch = patientCouchRepository.getLastCouchOfPatient(id_patient);
+            if(idPatientCouch != null ){
+                PatientCouch patientCouch = patientCouchRepository.findById(idPatientCouch);
+                if(patientCouch.getStatus().equals("INACTIVE")){
+                    PatientCouch couchToPatient = new PatientCouch();
+                    couchToPatient.setPatientcouch(repository.findById(id_patient));
+                    couchToPatient.setCouch(couchRepository.findById(id_couch));
+                    couchToPatient.setStatus("ACTIVE");
+                    patientCouchRepository.save(couchToPatient);
+                    return 0;
+                }
+                return 1;
+            }
             PatientCouch couchToPatient = new PatientCouch();
             couchToPatient.setPatientcouch(repository.findById(id_patient));
             couchToPatient.setCouch(couchRepository.findById(id_couch));
+            couchToPatient.setStatus("ACTIVE");
             patientCouchRepository.save(couchToPatient);
-            return true;
+            return 0;
+            
         }catch(Exception e){
-            return false;
+            return 2;
         }
     }
     
@@ -121,6 +151,44 @@ public class PatientServiceImpl{
         }
     }
     
+    public boolean deletePatient(long id){
+        try{
+            repository.deleteById(id);
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
+    public int deallocateBed(long id_patient){
+        try{
+            Long idPatientBed = patientBedRepository.getLastBedOfPatient(id_patient);
+            if(idPatientBed != null ){
+                PatientBed patientBed = patientBedRepository.findById(idPatientBed);
+                patientBed.setStatus("INACTIVE");
+                patientBedRepository.save(patientBed);
+                return 0;
+            }
+            return 1;
+        }catch(Exception e){
+            return 2;
+        }
+    }
+
+    public int deallocateCouch(long id_patient){
+        try{
+            Long idPatientCouch = patientCouchRepository.getLastCouchOfPatient(id_patient);
+            if(idPatientCouch != null ){
+                PatientCouch patientCouch = patientCouchRepository.findById(idPatientCouch);
+                patientCouch.setStatus("INACTIVE");
+                patientCouchRepository.save(patientCouch);
+                return 0;
+            }
+            return 1;
+        }catch(Exception e){
+            return 2;
+        }
+    }
 }
 
 

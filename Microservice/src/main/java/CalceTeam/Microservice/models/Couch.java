@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.OneToMany;
+import javax.persistence.CascadeType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
@@ -21,7 +22,8 @@ public class Couch {
   @Column(name = "couch_id", nullable = false, unique = true)
   private long id;
 
-  @OneToMany(mappedBy = "couch")
+  @JsonIgnore
+  @OneToMany(mappedBy = "couch",cascade = CascadeType.REMOVE)
   Set<PatientCouch> patients;
 
 

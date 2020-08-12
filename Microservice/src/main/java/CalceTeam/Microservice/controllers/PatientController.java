@@ -56,9 +56,9 @@ public class PatientController {
 
     }
 
-  @PutMapping("/update")
-    public ResponseEntity<Void> updatePatient(@RequestBody @Valid PatientDto patient){
-      if(service.update(patient)){
+  @PutMapping("/{id}/update")
+    public ResponseEntity<Void> updatePatient(@PathVariable long id,@RequestBody @Valid PatientDto patient){
+      if(service.update(id,patient)){
         return new ResponseEntity<>(HttpStatus.CREATED);
       }
       else{
@@ -79,8 +79,12 @@ public class PatientController {
 
   @PutMapping("/{id}/assignBed")
     public ResponseEntity<Void> assignBedtoPatient(@PathVariable("id") long id, @Param("id_bed") long id_bed ){
-      if(service.assignBedtoPatient(id_bed, id)){
+      int response = service.assignBedtoPatient(id_bed, id); 
+      if(response == 0){
         return new ResponseEntity<>(HttpStatus.CREATED);
+      }
+      else if(response == 1){
+        return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
       }
       else{
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -89,13 +93,54 @@ public class PatientController {
 
   @PutMapping("/{id}/assignCouch")
     public ResponseEntity<Void> assignCouchtoPatient(@PathVariable long id, @Param("id_couch") long id_couch ){
-      if(service.assignCouchtoPatient(id_couch, id)){
+      int response = service.assignCouchtoPatient(id_couch, id); 
+      if(response == 0){
         return new ResponseEntity<>(HttpStatus.CREATED);
+      }
+      else if(response == 1){
+        return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
       }
       else{
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
       }
     }
     
+  @DeleteMapping("/{id}/delete")
+    public ResponseEntity<Void> deletePatient(@PathVariable long id){
+      if(service.deletePatient(id)){
+        return new ResponseEntity<>(HttpStatus.OK);
+      }
+      else{
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+    }
+
+  @PutMapping("/{id}/deallocateBed")
+    public ResponseEntity<Void> deallocateBedofPatient(@PathVariable("id") long id){
+      int response = service.deallocateBed(id); 
+      if(response == 0){
+        return new ResponseEntity<>(HttpStatus.CREATED);
+      }
+      else if(response == 1){
+        return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+      }
+      else{
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+
+  @PutMapping("/{id}/deallocateCouch")
+    public ResponseEntity<Void> deallocateCouchOfPatient(@PathVariable long id){
+      int response = service.deallocateCouch(id); 
+      if(response == 0){
+        return new ResponseEntity<>(HttpStatus.CREATED);
+      }
+      else if(response == 1){
+        return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+      }
+      else{
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
 
 }

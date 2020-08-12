@@ -7,11 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -22,7 +23,8 @@ public class Bed {
   @Column(name = "bed_id", nullable = false, unique = true)
   private long id;
 
-  @OneToMany(mappedBy = "bed")
+  @JsonIgnore
+  @OneToMany(mappedBy = "bed",cascade = CascadeType.REMOVE)
   Set<PatientBed> patients;
 
 

@@ -26,23 +26,27 @@ public class PatientCouch {
   @Column(name = "patientBed_id", nullable = false, unique = true)
   private long id;
 
-  @ManyToOne
+  @ManyToOne()
   @JoinColumn(name = "patient_id")
   Patient patientcouch;
 
-  @ManyToOne
+  @ManyToOne()
   @JoinColumn(name = "couch_id")
   Couch couch;
+
+  @Column(name = "status")
+  String status;
 
 
 
   public PatientCouch() {
   }
 
-  public PatientCouch(long id, Patient patientcouch, Couch couch) {
+  public PatientCouch(long id, Patient patientcouch, Couch couch, String status) {
     this.id = id;
     this.patientcouch = patientcouch;
     this.couch = couch;
+    this.status = status;
   }
 
   public long getId() {
@@ -69,6 +73,14 @@ public class PatientCouch {
     this.couch = couch;
   }
 
+  public String getStatus() {
+    return this.status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
   public PatientCouch id(long id) {
     this.id = id;
     return this;
@@ -84,6 +96,11 @@ public class PatientCouch {
     return this;
   }
 
+  public PatientCouch status(String status) {
+    this.status = status;
+    return this;
+  }
+
   @Override
     public boolean equals(Object o) {
         if (o == this)
@@ -92,12 +109,12 @@ public class PatientCouch {
             return false;
         }
         PatientCouch patientCouch = (PatientCouch) o;
-        return id == patientCouch.id && Objects.equals(patientcouch, patientCouch.patientcouch) && Objects.equals(couch, patientCouch.couch);
+        return id == patientCouch.id && Objects.equals(patientcouch, patientCouch.patientcouch) && Objects.equals(couch, patientCouch.couch) && Objects.equals(status, patientCouch.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, patientcouch, couch);
+    return Objects.hash(id, patientcouch, couch, status);
   }
 
   @Override
@@ -106,8 +123,10 @@ public class PatientCouch {
       " id='" + getId() + "'" +
       ", patientcouch='" + getPatientcouch() + "'" +
       ", couch='" + getCouch() + "'" +
+      ", status='" + getStatus() + "'" +
       "}";
   }
+  
   
 
 }
