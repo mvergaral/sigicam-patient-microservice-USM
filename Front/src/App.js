@@ -6,6 +6,7 @@ import NavBar from './components/navbar'
 import NavPatient from './components/NavPatient'
 import CreateForm from './components/CreateForm'
 import SearchForm from './components/SearchForm'
+import Patient from './components/patient'
 class App extends React.Component {
   constructor(){
     super()
@@ -32,6 +33,11 @@ class App extends React.Component {
               exact
               path='/search'
               component={SearchForm}
+            />
+            <Route
+              exact
+              path='/patient'
+              component={Patient}
             />
           </Switch>
         </div>

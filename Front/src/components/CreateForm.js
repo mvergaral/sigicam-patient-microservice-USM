@@ -42,10 +42,15 @@ class CreateForm extends React.Component {
           address: this.state.adress
         }
       )
-    }).then(function(response) {
-      console.log(response)
-     
-      })
+    })
+    .then((response) => {
+      if(response.ok){
+        alert("Paciente creado")
+      }
+      else{
+        alert("Error")
+      }
+    })
 
     event.preventDefault();
   }

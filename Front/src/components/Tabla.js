@@ -1,10 +1,7 @@
 import React from 'react'
-import axios from 'axios'
 import Table from 'react-bootstrap/Table'
-import InputGroup from 'react-bootstrap/InputGroup'
-import FormControl from 'react-bootstrap/FormControl'
+import {Link} from 'react-router-dom'
 
-import todosData from '../data/todosData'
 class Tabla extends React.Component {
     constructor(){
         super()
@@ -13,8 +10,17 @@ class Tabla extends React.Component {
         }
     }
 
-    onButtonClick(){
-
+    deletePatient(id){
+        fetch('http://localhost:8000/patient/'+id+'/delete', {method: 'DELETE'})
+        .then(data => {
+            if(data.ok){
+                alert("Paciente eliminado con exito")
+                window.location.reload(false)
+            }
+            else{
+                alert("Error")
+            }
+        })
     }
     
 	componentDidMount() {
@@ -29,13 +35,20 @@ class Tabla extends React.Component {
     
         const RowPaciente = (patient)=>{
             return(
-            <tr>
+            <tr key={patient.id}>
                 <td>{patient.id}</td>
                 <td>{patient.name}</td>
-                <td>{patient.run}</td> {/* añadir redireccion a la vista del paciente*/}
-                <td className="d-flex justify-content-between"><button type="button" class="btn btn-primary">Ver</button><button type="button" class="btn btn-danger">Eliminar</button></td>
+                <td>{patient.run}</td>
+                <td className="d-flex justify-content-between">
+                    <Link type="button" className="btn btn-primary"
+                        to={{
+                            pathname: "/patient",
+                            state: {id: patient.id}
+                        }}
+                    >Ver</Link>
+                    <button type="button" className="btn btn-danger" onClick={() => this.deletePatient(patient.id)}>Eliminar</button>
+                </td>
             </tr>
-
             )
         }
         return(
