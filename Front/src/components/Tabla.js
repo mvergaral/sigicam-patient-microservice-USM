@@ -9,68 +9,54 @@ class Tabla extends React.Component {
     constructor(){
         super()
         this.state = {
-						filtro: "",
-						patients: [] 
+			patients: [] 
         }
-        this.handleSearchBar = this.handleSearchBar.bind(this)
     }
 
-    handleSearchBar(event){
-    
-      this.setState({
-          filtro: event.target.value
-      })
-        
+    onButtonClick(){
+
     }
     
-		componentDidMount() {
-			fetch('http://localhost:8000/patient/all')
-				.then(res => res.json())
-				.then((data) => {
-					this.setState({ patients: data })
-				})
-				.catch(console.log)
-		}
+	componentDidMount() {
+		fetch('http://localhost:8000/patient/all')
+			.then(res => res.json())
+			.then((data) => {
+				this.setState({ patients: data })
+			})
+			.catch(console.log)
+	}
     render(){
     
         const RowPaciente = (patient)=>{
-            
-            //3 lineas para el filtro, y solo checkea datos que sean strings
-            const values = Object.entries(patient).map((valor)=>{return valor[1]}) 
-            const stringValues = values.filter(  foo => typeof foo === "string" )
-            const includeFilters = stringValues.map((bar)=>{return bar.includes(this.state.filtro)}).includes(true)
             return(
-                includeFilters &&
-                <tr 
-                key ={patient.id} 
-                onClick = {() => this.props.handleTableClick(patient)}
-                >
-                    <td>{patient.id}</td><td>{patient.name}</td>                   
-                </tr>
+            <tr>
+                <td>{patient.id}</td>
+                <td>{patient.name}</td>
+                <td>{patient.run}</td> {/* añadir redireccion a la vista del paciente*/}
+                <td className="d-flex justify-content-between"><button type="button" class="btn btn-primary">Ver</button><button type="button" class="btn btn-danger">Eliminar</button></td>
+            </tr>
+
             )
         }
         return(
-            
-            
-            <div >
-                <InputGroup className="mb-3">
-                        <InputGroup.Prepend>
-                            <InputGroup.Text  value = {this.state.filtro} id="basic-addon1">Filtro</InputGroup.Text>
-                        </InputGroup.Prepend>
-                        <FormControl value = {this.state.filtro} onChange ={this.handleSearchBar}
-                            aria-describedby="basic-addon1"
-                        />
-                </InputGroup>
-                <Table striped bordered hover >
-                    <thead>
-                        <tr>
-                            <th>#</th><th>Nombre</th>
-                        </tr>
-                    </thead>
-                    <tbody >
-                        {this.state.patients.map( patient => RowPaciente(patient))}
-                    </tbody>
-                </Table>
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <Table striped bordered >
+                            <thead>
+                                <tr>
+                                    <th className="col-1">Id</th>
+                                    <th className="col-3">Nombre</th>
+                                    <th className="col-3">Run</th>
+                                    <th className="col-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody >
+                                {this.state.patients.map( patient => RowPaciente(patient))}
+                            </tbody>
+                        </Table>
+                    </div>
+                </div>
               
             </div>
           

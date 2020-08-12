@@ -1,77 +1,42 @@
 import React from 'react'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Tabla from './components/Tabla'
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import history from './helpers/history'
+import Table from './components/Tabla'
 import NavBar from './components/navbar'
-import FormPaciente from './components/FormPaciente'
-import Button from 'react-bootstrap/Button'
-import PanelPaciente from './components/PanelPaciente'
+import NavPatient from './components/NavPatient'
+import CreateForm from './components/CreateForm'
+import SearchForm from './components/SearchForm'
 class App extends React.Component {
   constructor(){
     super()
-    this.state = {
-      displayForm: false,
-      displayPanel: false,
-      selectedRow: null,
-      searchBar: ""
-    }
-    this.handleButtonClick = this.handleButtonClick.bind(this)
-    this.handleTableClick = this.handleTableClick.bind(this)
-
   }
-
-  handleButtonClick(){
-    this.setState( prevState=>{
-      const updatedState = {
-        ...prevState,
-        displayForm : !prevState.displayForm,
-        displayPanel: prevState.displayForm
-      }
-      return updatedState  
-    })
-  }
-  handleTableClick(selected){
-    
-    this.setState( ()=>{
-      
-      return {
-        selectedRow : selected,
-        displayPanel:true,
-        displayForm:false
-
-      }
-      
-    })
-  }
-
   render() {
-    
-    const formComponent = this.state.displayForm && <><FormPaciente/> <Button style = {{margin: "10px"}} onClick = {()=> {this.handleButtonClick()}} variant="primary" type="submit">Subir</Button></> 
-    const panelComponent = this.state.displayPanel && <PanelPaciente dataPaciente = {this.state.selectedRow}/>
-
-      return (
-        
+    return (
+      <BrowserRouter
+        history={history}>
         <div>
-          <NavBar/>
-          <Container >
-            <Row style = {{textAlign: "center"}}>
-              <Col>
-                <h1>PACIENTES</h1>
-                <Button variant = "primary" onClick = {()=> {this.handleButtonClick()}}> 
-                  {this.state.displayForm ? "Cancelar" : "Agregar Paciente"}
-                </Button >
-                <Tabla handleTableClick = {this.handleTableClick}/>
-               
-              </Col>
-              <Col>
-                {formComponent}
-                {panelComponent}
-              </Col>
-            </Row>
-          </Container>
+          <NavBar />
+          <NavPatient />
+          <Switch>
+            <Route
+              exact
+              path='/'
+              component={Table}
+            />
+            <Route
+              exact
+              path='/new'
+              component={CreateForm}
+            />
+            <Route
+              exact
+              path='/search'
+              component={SearchForm}
+            />
+          </Switch>
         </div>
-      )
+      </BrowserRouter>
+    )
   }
 }
 
