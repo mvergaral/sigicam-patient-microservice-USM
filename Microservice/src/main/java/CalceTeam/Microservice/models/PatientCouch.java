@@ -24,7 +24,7 @@ public class PatientCouch {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false, unique = true)
-  private long id;
+  private Long id;
 
   @ManyToOne()
   @JoinColumn(name = "patient_id", nullable = false)
@@ -42,18 +42,18 @@ public class PatientCouch {
   public PatientCouch() {
   }
 
-  public PatientCouch(long id, Patient patient, Couch couch, String status) {
+  public PatientCouch(Long id, Patient patient, Couch couch, String status) {
     this.id = id;
     this.patient = patient;
     this.couch = couch;
     this.status = status;
   }
 
-  public long getId() {
+  public Long getId() {
     return this.id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -81,7 +81,7 @@ public class PatientCouch {
     this.status = status;
   }
 
-  public PatientCouch id(long id) {
+  public PatientCouch id(Long id) {
     this.id = id;
     return this;
   }

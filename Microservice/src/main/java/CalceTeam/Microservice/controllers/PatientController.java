@@ -33,7 +33,7 @@ public class PatientController {
     }
 
   @GetMapping("/{id}")
-    public ResponseEntity<Patient> getPatientById(@PathVariable("id") long id){
+    public ResponseEntity<Patient> getPatientById(@PathVariable("id") Long id){
       Patient patient = service.findById(id);
       if (patient != null){
         return new ResponseEntity<>(patient, HttpStatus.FOUND);
@@ -57,7 +57,7 @@ public class PatientController {
     }
 
   @PutMapping("/{id}/update")
-    public ResponseEntity<Void> updatePatient(@PathVariable long id,@RequestBody @Valid PatientDto patient){
+    public ResponseEntity<Void> updatePatient(@PathVariable Long id,@RequestBody @Valid PatientDto patient){
       if(service.update(id,patient)){
         return new ResponseEntity<>(HttpStatus.CREATED);
       }
@@ -78,7 +78,7 @@ public class PatientController {
     }
 
   @PutMapping("/{id}/assignBed")
-    public ResponseEntity<Void> assignBedtoPatient(@PathVariable("id") long id, @Param("id_bed") long id_bed ){
+    public ResponseEntity<Void> assignBedtoPatient(@PathVariable("id") Long id, @Param("id_bed") Long id_bed ){
       int response = service.assignBedtoPatient(id_bed, id); 
       if(response == 0){
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -92,7 +92,7 @@ public class PatientController {
     }
 
   @PutMapping("/{id}/assignCouch")
-    public ResponseEntity<Void> assignCouchtoPatient(@PathVariable long id, @Param("id_couch") long id_couch ){
+    public ResponseEntity<Void> assignCouchtoPatient(@PathVariable Long id, @Param("id_couch") Long id_couch ){
       int response = service.assignCouchtoPatient(id_couch, id); 
       if(response == 0){
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -106,7 +106,7 @@ public class PatientController {
     }
     
   @DeleteMapping("/{id}/delete")
-    public ResponseEntity<Void> deletePatient(@PathVariable long id){
+    public ResponseEntity<Void> deletePatient(@PathVariable Long id){
       if(service.deletePatient(id)){
         return new ResponseEntity<>(HttpStatus.OK);
       }
@@ -116,7 +116,7 @@ public class PatientController {
     }
 
   @PutMapping("/{id}/deallocateBed")
-    public ResponseEntity<Void> deallocateBedofPatient(@PathVariable("id") long id){
+    public ResponseEntity<Void> deallocateBedofPatient(@PathVariable("id") Long id){
       int response = service.deallocateBed(id); 
       if(response == 0){
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -130,7 +130,7 @@ public class PatientController {
     }
 
   @PutMapping("/{id}/deallocateCouch")
-    public ResponseEntity<Void> deallocateCouchOfPatient(@PathVariable long id){
+    public ResponseEntity<Void> deallocateCouchOfPatient(@PathVariable Long id){
       int response = service.deallocateCouch(id); 
       if(response == 0){
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -144,7 +144,7 @@ public class PatientController {
     }
 
   @GetMapping("/{id}/activeBed")
-    public ResponseEntity<Long> getAssignedBed(@PathVariable long id){
+    public ResponseEntity<Long> getAssignedBed(@PathVariable Long id){
       Long response = service.getAssignedBed(id);
       if(response != null){
         return new ResponseEntity<>(response, HttpStatus.FOUND);
@@ -154,7 +154,7 @@ public class PatientController {
     }
 
   @GetMapping("/{id}/activeCouch")
-    public ResponseEntity<Long> getAssignedCouch(@PathVariable long id){
+    public ResponseEntity<Long> getAssignedCouch(@PathVariable Long id){
       Long response = service.getAssignedCouch(id);
       if(response != null){
         return new ResponseEntity<>(response, HttpStatus.FOUND);

@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository("BedRepository")
 public interface BedRepository extends JpaRepository<Bed , Serializable> {
 
-  public abstract Bed findById(long id);
+  public abstract Bed findById(Long id);
 
 }

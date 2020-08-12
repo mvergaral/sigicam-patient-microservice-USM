@@ -24,7 +24,7 @@ public class Patient {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "patient_id", nullable = false, unique = true)
-  private long id;
+  private Long id;
 
   @Column(name = "run", nullable = false, unique = true)
   private String run;
@@ -53,7 +53,7 @@ public class Patient {
   public Patient() {
   }
 
-  public Patient(long id, String run, String name, String last_name, String gender, String address, Set<PatientBed> beds, Set<PatientCouch> couchs) {
+  public Patient(Long id, String run, String name, String last_name, String gender, String address, Set<PatientBed> beds, Set<PatientCouch> couchs) {
     this.id = id;
     this.run = run;
     this.name = name;
@@ -64,11 +64,11 @@ public class Patient {
     this.couchs = couchs;
   }
 
-  public long getId() {
+  public Long getId() {
     return this.id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -128,7 +128,7 @@ public class Patient {
     this.couchs = couchs;
   }
 
-  public Patient id(long id) {
+  public Patient id(Long id) {
     this.id = id;
     return this;
   }

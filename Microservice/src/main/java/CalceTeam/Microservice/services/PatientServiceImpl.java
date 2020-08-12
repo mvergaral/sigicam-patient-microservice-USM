@@ -49,7 +49,7 @@ public class PatientServiceImpl{
         }
     }
 
-    public boolean delete(long id){
+    public boolean delete(Long id){
         try{
             Patient patient = repository.findById(id);
             repository.delete(patient);
@@ -59,7 +59,7 @@ public class PatientServiceImpl{
         }
     }
 
-    public boolean update(long id_patient, PatientDto dto) {
+    public boolean update(Long id_patient, PatientDto dto) {
         try{
             dto.setId(id_patient);
             Patient patient = repository.findById(id_patient);
@@ -72,7 +72,7 @@ public class PatientServiceImpl{
         
     }
 
-    public Patient findById(long id){
+    public Patient findById(Long id){
         try{
             return repository.findById(id);
         }catch(Exception e){
@@ -88,7 +88,7 @@ public class PatientServiceImpl{
         }
     }
 
-    public int assignBedtoPatient(long id_bed, long id_patient){
+    public int assignBedtoPatient(Long id_bed, Long id_patient){
         try{
             Long idPatientBed = patientBedRepository.getLastBedOfPatient(id_patient);
             if(idPatientBed != null ){
@@ -128,7 +128,7 @@ public class PatientServiceImpl{
         
     }
 
-    public int assignCouchtoPatient(long id_couch, long id_patient){
+    public int assignCouchtoPatient(Long id_couch, Long id_patient){
         try{
             Long idPatientCouch = patientCouchRepository.getLastCouchOfPatient(id_patient);
             if(idPatientCouch != null ){
@@ -175,7 +175,7 @@ public class PatientServiceImpl{
         }
     }
     
-    public boolean deletePatient(long id){
+    public boolean deletePatient(Long id){
         try{
             repository.deleteById(id);
             return true;
@@ -184,7 +184,7 @@ public class PatientServiceImpl{
         }
     }
 
-    public int deallocateBed(long id_patient){
+    public int deallocateBed(Long id_patient){
         try{
             Long idPatientBed = patientBedRepository.getLastBedOfPatient(id_patient);
             if(idPatientBed != null ){
@@ -199,7 +199,7 @@ public class PatientServiceImpl{
         }
     }
 
-    public int deallocateCouch(long id_patient){
+    public int deallocateCouch(Long id_patient){
         try{
             Long idPatientCouch = patientCouchRepository.getLastCouchOfPatient(id_patient);
             if(idPatientCouch != null ){
@@ -214,11 +214,11 @@ public class PatientServiceImpl{
         }
     }
 
-    public Long getAssignedBed(long id_patient){
+    public Long getAssignedBed(Long id_patient){
         return patientBedRepository.getActiveBedIdOfPatient(id_patient);
     }
 
-    public Long getAssignedCouch(long id_patient){
+    public Long getAssignedCouch(Long id_patient){
         return patientCouchRepository.getActiveCouchIdOfPatient(id_patient);
     }
 }
