@@ -27,6 +27,10 @@ class Patient extends Component {
     this.setCouch = this.setCouch.bind(this);
     this.dropBed = this.dropBed.bind(this);
     this.dropCouch = this.dropCouch.bind(this);
+    this.setApiBed = this.setApiBed.bind(this);
+    this.setApiCouch = this.setApiCouch.bind(this);
+    this.dropApiBed = this.dropApiBed.bind(this);
+    this.dropApiCouch = this.dropApiCouch.bind(this);
   }
   componentDidMount(){
     console.log(this.props.location.state.id)
@@ -65,10 +69,54 @@ class Patient extends Component {
         this.setState({ available_couchs: data })
       })
   }
+
+  setApiBed() {
+    fetch("https://recuperacionisw.herokuapp.com/api/camas/" + this.new_bed, {
+      method: "PUT",
+      body: JSON.stringify({ id: this.bed_id, estado: "ocupada" })
+    })
+  }
+  dropApiBed() {
+    fetch("https://recuperacionisw.herokuapp.com/api/camas/" + this.bed_id, {
+      method: "PUT",
+      body: JSON.stringify({ id: this.bed_id, estado: "disponible" })
+    })
+  }
+
+  setApiCouch() {
+    fetch("https://quimioterapia.herokuapp.com/api/sillon/"+this.state.couch_id)
+    .then(data => {
+      fetch("https://quimioterapia.herokuapp.com/api/sillon/", {
+        method: "PUT",
+        body: JSON.stringify({ 
+          id: this.couch_id, 
+          asignado: "true",
+          activo: data.activo,
+          idSala: data.idSala
+        })
+      })
+    })
+  }
+  dropApiCouch() {
+    fetch("https://quimioterapia.herokuapp.com/api/sillon/" + this.state.couch_id)
+      .then(data => {
+        fetch("https://quimioterapia.herokuapp.com/api/sillon/", {
+          method: "PUT",
+          body: JSON.stringify({
+            id: this.couch_id,
+            asignado: "false",
+            activo: data.activo,
+            idSala: data.idSala
+          })
+        })
+      })
+  }
+
   setBed(){
     fetch('http://localhost:8000/patient/' + this.state.id +'/assignBed?id_bed='+this.state.new_bed, { method: 'PUT' })
     .then(data =>{
       if(data.ok){
+        this.setApiBed()
         alert("Asignado")
         window.location.reload(false)
       }
@@ -77,10 +125,13 @@ class Patient extends Component {
       }
     })
   }
+
+
   setCouch(){
     fetch('http://localhost:8000/patient/' +this.state.id+ '/assignCouch?id_couch=' + this.state.new_couch, { method: 'PUT' })
       .then(data => {
         if (data.ok) {
+          this.setApiCouch()
           alert("Asignado")
           window.location.reload(false)
         }
