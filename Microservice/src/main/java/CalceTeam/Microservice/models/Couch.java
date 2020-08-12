@@ -18,9 +18,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "couch")
 public class Couch {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "couch_id", nullable = false, unique = true)
-  private long id;
+  private Long id;
 
   @JsonIgnore
   @OneToMany(mappedBy = "couch",cascade = CascadeType.REMOVE)
@@ -30,16 +29,16 @@ public class Couch {
   public Couch() {
   }
 
-  public Couch(long id, Set<PatientCouch> patients) {
+  public Couch(Long id, Set<PatientCouch> patients) {
     this.id = id;
     this.patients = patients;
   }
 
-  public long getId() {
+  public Long getId() {
     return this.id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -51,7 +50,7 @@ public class Couch {
     this.patients = patients;
   }
 
-  public Couch id(long id) {
+  public Couch id(Long id) {
     this.id = id;
     return this;
   }

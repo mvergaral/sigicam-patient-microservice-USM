@@ -8,7 +8,7 @@ import CalceTeam.Microservice.models.*;
 
 
 public class PatientDto {
-  private long id;
+  private Long id;
   private String run;
   String name;
   String last_name;
@@ -21,7 +21,7 @@ public class PatientDto {
   public PatientDto() {
   }
 
-  public PatientDto(long id, String run, String name, String last_name, String gender, String address, Set<PatientBed> beds, Set<PatientCouch> couchs) {
+  public PatientDto(Long id, String run, String name, String last_name, String gender, String address, Set<PatientBed> beds, Set<PatientCouch> couchs) {
     this.id = id;
     this.run = run;
     this.name = name;
@@ -32,11 +32,11 @@ public class PatientDto {
     this.couchs = couchs;
   }
 
-  public long getId() {
+  public Long getId() {
     return this.id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -96,7 +96,7 @@ public class PatientDto {
     this.couchs = couchs;
   }
 
-  public PatientDto id(long id) {
+  public PatientDto id(Long id) {
     this.id = id;
     return this;
   }

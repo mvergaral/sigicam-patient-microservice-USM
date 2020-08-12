@@ -19,9 +19,8 @@ import javax.persistence.OneToMany;
 @Table(name = "bed")
 public class Bed {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "bed_id", nullable = false, unique = true)
-  private long id;
+  private Long id;
 
   @JsonIgnore
   @OneToMany(mappedBy = "bed",cascade = CascadeType.REMOVE)
@@ -31,16 +30,16 @@ public class Bed {
   public Bed() {
   }
 
-  public Bed(long id, Set<PatientBed> patients) {
+  public Bed(Long id, Set<PatientBed> patients) {
     this.id = id;
     this.patients = patients;
   }
 
-  public long getId() {
+  public Long getId() {
     return this.id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -52,7 +51,7 @@ public class Bed {
     this.patients = patients;
   }
 
-  public Bed id(long id) {
+  public Bed id(Long id) {
     this.id = id;
     return this;
   }

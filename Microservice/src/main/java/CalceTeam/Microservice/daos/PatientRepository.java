@@ -12,7 +12,7 @@ import java.util.List;
 @Repository("PatientRepository")
 public interface PatientRepository extends JpaRepository<Patient , Serializable> {
 
-  public abstract Patient findById(long id);
+  public abstract Patient findById(Long id);
   public abstract Patient findByRun(String run);
 
   @Query(value = "SELECT * from patient", nativeQuery = true)

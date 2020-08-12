@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository("CouchRepository")
 public interface CouchRepository extends JpaRepository<Couch , Serializable> {
 
-  public abstract Couch findById(long id);
+  public abstract Couch findById(Long id);
 
 }
