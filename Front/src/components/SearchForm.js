@@ -73,8 +73,10 @@ class SearchForm extends React.Component {
       <tr>
           <td>{patient.id}</td>
           <td>{patient.name}</td>
-          <td>{patient.run}</td>{/* añadir redireccion a la vista del paciente*/}
-          <td className="d-flex justify-content-between"><button type="button" className="btn btn-primary">Ver</button><button type="button" className="btn btn-danger">Eliminar</button></td>
+          <td>{patient.run}</td>
+          <td className="d-flex justify-content-between">
+            <button type="button" className="btn btn-primary">Ver</button>
+            <button type="button" className="btn btn-danger">Eliminar</button></td>
       </tr>
       </tbody>
       </Table>

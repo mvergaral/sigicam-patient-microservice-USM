@@ -31,7 +31,7 @@ class NavPaciente extends Component {
     const pages = this.state.pages;
     return (
       <div>
-        <Nav className="navbar navbar-expand-lg  navbar-dark" style={{ padding: 0 }}>>
+        <Nav className="navbar navbar-expand-lg  navbar-dark" style={{ padding: 0 }}>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
