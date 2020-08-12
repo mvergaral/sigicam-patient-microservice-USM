@@ -24,7 +24,7 @@ public class PatientBed {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "patientBed_id", nullable = false, unique = true)
+  @Column(name = "id", nullable = false, unique = true)
   private long id;
 
   @ManyToOne
